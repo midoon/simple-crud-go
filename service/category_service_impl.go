@@ -75,7 +75,7 @@ func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int
 	return helper.ToCategoryResponse(category)
 }
 
-func (service *CategoryServiceImpl) FindAll(ctx context.Context, request web.CategoryCreateRequest) []web.CategoryResponse {
+func (service *CategoryServiceImpl) FindAll(ctx context.Context) []web.CategoryResponse {
 	tx, err := service.DB.Begin()
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
