@@ -12,6 +12,10 @@ import (
 type CategoryRespositoryImpl struct {
 }
 
+func NewCategoryRepository() CategoryRespository {
+	return &CategoryRespositoryImpl{}
+}
+
 func (c *CategoryRespositoryImpl) Save(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category {
 	SQL := "insert into category(name) values (?)"
 	result, err := tx.ExecContext(ctx, SQL, category.Name)
@@ -33,20 +37,20 @@ func (c *CategoryRespositoryImpl) Update(ctx context.Context, tx *sql.Tx, catego
 	return category
 }
 
-func (c *CategoryRespositoryImpl) Delete (ctx context.Context, tx *sql.Tx, category domain.Category) {
+func (c *CategoryRespositoryImpl) Delete(ctx context.Context, tx *sql.Tx, category domain.Category) {
 	SQL := "delete from category where id = ?"
 	_, err := tx.ExecContext(ctx, SQL, category.Id)
 	helper.PanicIfError(err)
 }
 
-func (c *CategoryRespositoryImpl) FindById (ctx context.Context, tx *sql.Tx, categoryId int) (domain.Category, error) {
+func (c *CategoryRespositoryImpl) FindById(ctx context.Context, tx *sql.Tx, categoryId int) (domain.Category, error) {
 	SQL := "select id, name, from category where id = ?"
 	rows, err := tx.QueryContext(ctx, SQL, categoryId)
 	helper.PanicIfError(err)
 
 	category := domain.Category{}
-	if rows.Next(){
-		err:= rows.Scan(&category.Id, &category.Name)
+	if rows.Next() {
+		err := rows.Scan(&category.Id, &category.Name)
 		helper.PanicIfError(err)
 		return category, nil
 	} else {
@@ -54,14 +58,13 @@ func (c *CategoryRespositoryImpl) FindById (ctx context.Context, tx *sql.Tx, cat
 	}
 }
 
-
-func (c *CategoryRespositoryImpl) FindAll (ctx context.Context, tx *sql.Tx) []domain.Category{
+func (c *CategoryRespositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.Category {
 	SQL := "select id, name from category"
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
 
 	var categories []domain.Category
-	for rows.Next(){
+	for rows.Next() {
 		category := domain.Category{}
 		err := rows.Scan(&category.Id, &category.Name)
 		helper.PanicIfError(err)
