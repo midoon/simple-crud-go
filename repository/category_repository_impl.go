@@ -30,7 +30,7 @@ func (c *CategoryRespositoryImpl) Save(ctx context.Context, tx *sql.Tx, category
 }
 
 func (c *CategoryRespositoryImpl) Update(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category {
-	SQL := "update category set name = ? where id = ?"
+	SQL := "update category set name = (?) where id = (?)"
 	_, err := tx.ExecContext(ctx, SQL, category.Name, category.Id)
 	helper.PanicIfError(err)
 
@@ -44,10 +44,11 @@ func (c *CategoryRespositoryImpl) Delete(ctx context.Context, tx *sql.Tx, catego
 }
 
 func (c *CategoryRespositoryImpl) FindById(ctx context.Context, tx *sql.Tx, categoryId int) (domain.Category, error) {
-	SQL := "select id, name, from category where id = ?"
+	SQL := "select id, name from category where id = ?"
 	rows, err := tx.QueryContext(ctx, SQL, categoryId)
 	helper.PanicIfError(err)
 
+	defer rows.Close()
 	category := domain.Category{}
 	if rows.Next() {
 		err := rows.Scan(&category.Id, &category.Name)
@@ -62,6 +63,8 @@ func (c *CategoryRespositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []dom
 	SQL := "select id, name from category"
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
+
+	defer rows.Close()
 
 	var categories []domain.Category
 	for rows.Next() {
