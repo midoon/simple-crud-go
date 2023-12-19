@@ -8,6 +8,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/midoon/simple-crud-go/app"
 	"github.com/midoon/simple-crud-go/controller"
+	"github.com/midoon/simple-crud-go/exception"
 	"github.com/midoon/simple-crud-go/helper"
 	"github.com/midoon/simple-crud-go/repository"
 	"github.com/midoon/simple-crud-go/service"
@@ -28,6 +29,8 @@ func main() {
 	router.POST("/api/categories", categoryController.Create)
 	router.PUT("/api/categories/:categoryId", categoryController.Update)
 	router.DELETE("/api/categories/:categoryId", categoryController.Delete)
+
+	router.PanicHandler = exception.ErrorHandler
 
 	server := http.Server{
 		Addr:    "localhost:3000",
