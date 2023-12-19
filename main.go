@@ -10,6 +10,7 @@ import (
 	"github.com/midoon/simple-crud-go/controller"
 	"github.com/midoon/simple-crud-go/exception"
 	"github.com/midoon/simple-crud-go/helper"
+	"github.com/midoon/simple-crud-go/middleware"
 	"github.com/midoon/simple-crud-go/repository"
 	"github.com/midoon/simple-crud-go/service"
 )
@@ -34,7 +35,7 @@ func main() {
 
 	server := http.Server{
 		Addr:    "localhost:3000",
-		Handler: router,
+		Handler: middleware.NewAuthMiddleware(router),
 	}
 
 	err := server.ListenAndServe()
