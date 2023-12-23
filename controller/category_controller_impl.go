@@ -14,7 +14,9 @@ type CategoryControllerImpl struct {
 	CategoryService service.CategoryService
 }
 
-func NewCategoryController(categoryService service.CategoryService) CategoryController {
+// best practice untuk return value harus sesuai dengan apa yang di return kan, contohnya di siini CategoryControllerImpl, 
+// dan nama dari function / providernya yaitu NewCategoryControllerImpl (karena terlanjur maka kita biarkan seperti yang bawah,)
+func NewCategoryController(categoryService service.CategoryService) *CategoryControllerImpl {
 	return &CategoryControllerImpl{
 		CategoryService: categoryService,
 	}

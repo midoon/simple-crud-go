@@ -18,7 +18,9 @@ type CategoryServiceImpl struct {
 	Validate           *validator.Validate
 }
 
-func NewCategoryService(categoryRespository repository.CategoryRespository, DB *sql.DB, validate *validator.Validate) CategoryService {
+// best practice untuk return value harus sesuai dengan apa yang di return kan, contohnya di siini CategoryServiceImpl, 
+// dan nama dari function / providernya yaitu NewCategoryServiceImpl (karena terlanjur maka kita biarkan seperti yang bawah,)
+func NewCategoryService(categoryRespository repository.CategoryRespository, DB *sql.DB, validate *validator.Validate) *CategoryServiceImpl {
 	return &CategoryServiceImpl{
 		CategoryRepository: categoryRespository,
 		DB:                 DB,

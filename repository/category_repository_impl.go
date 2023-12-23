@@ -12,7 +12,9 @@ import (
 type CategoryRespositoryImpl struct {
 }
 
-func NewCategoryRepository() CategoryRespository {
+// best practice untuk return value harus sesuai dengan apa yang di return kan, contohnya di siini CategoryRepositoryImpl, 
+// dan nama dari function / providernya yaitu NewCategoryRepositoryImpl (karena terlanjur maka kita biarkan seperti yang bawah,)
+func NewCategoryRepository() *CategoryRespositoryImpl {
 	return &CategoryRespositoryImpl{}
 }
 
